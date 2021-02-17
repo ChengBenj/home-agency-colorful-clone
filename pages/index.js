@@ -1,29 +1,45 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
+
+import Page from "../components/Page";
+import Header from "../components/Header";
+
 import PageContext from "../context/page";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
+  const [timer, setTimer] = useState(false)
   const { actualPage, nextPage, previousPage } = useContext(PageContext);
-
-  const defaultClass = " h-full w-full absolute inset-0 transition-all duration-700 ease-in-out transform translate-y-0 ";
-  const hideClass = "translate-y-full delay-700";
+  console.log(actualPage)
 
   const handleWheel = (e) => {
     const DOWN = 100;
 
-    if (e.deltaY === DOWN) {
-      nextPage();
-    } else {
-      previousPage();
+    if (!timer) {
+      setTimer(true);
+
+      if (e.deltaY === DOWN) {
+        nextPage();
+      } else {
+        previousPage();
+      }
+
+      setTimeout(() => {
+        setTimer(false);
+      }, 700)
     }
   }
 
   return (
     <div className="h-full relative overflow-hidden" onWheel={handleWheel}>
-      <div className={"bg-purple-600" + defaultClass + (actualPage !== 0 ? hideClass : '')} />
-      <div className={"bg-red-600" + defaultClass + (actualPage !== 1 ? hideClass : '')} />
-      <div className={"bg-blue-600" + defaultClass + (actualPage !== 2 ? hideClass : '')} />
-      <div className={"bg-yellow-600" + defaultClass + (actualPage !== 3 ? hideClass : '')} />
-      <div className={"bg-green-600" + defaultClass + (actualPage !== 4 ? hideClass : '')} />
+      <Header />
+
+      <Page index={0} color="bg-purple-600" />
+      <Page index={1} color="bg-red-600" />
+      <Page index={2} color="bg-blue-600" />
+      <Page index={3} color="bg-yellow-600" />
+      <Page index={4} color="bg-green-600" />
+
+      <Navbar />
     </div>
   )
 }

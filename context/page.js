@@ -29,12 +29,18 @@ export const PageProvider = ({ children }) => {
         }
     }
 
+    const goto = (page) => {
+        if (page >= 0 && page < 5)
+            setActualPage(page)
+    }
+
     return (
         <PageContext.Provider value={{
             actualPage,
             totalPage,
             nextPage,
-            previousPage
+            previousPage,
+            goto
         }}>
             {children}
         </PageContext.Provider>
